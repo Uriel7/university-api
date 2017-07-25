@@ -11,7 +11,7 @@ RSpec.describe 'Student API', type: :request do
     before { get '/students'}
 
     it 'return students' do
-      expect(json).not_be_empty
+      expect(json).not_to be_empty
       expect(json.size).to eq(10)
     end
 
@@ -27,7 +27,7 @@ RSpec.describe 'Student API', type: :request do
 
     context 'when the record exists' do
       it 'returns the student' do
-        expect(json).not_be_empty
+        expect(json).not_to be_empty
         expect(json['id']).to eq(student_id)
       end
 
@@ -44,7 +44,7 @@ RSpec.describe 'Student API', type: :request do
       end
 
       it 'return a not found message' do
-        expect(response.body).to match(/Couldn't find Student/)
+        expect(response.body).to match(/Couldn't find Student with 'id'=100/)
       end
     end
   end
@@ -70,11 +70,11 @@ RSpec.describe 'Student API', type: :request do
       before { post '/students', params: { name: 'Uriel' } }
       
       it 'returns status code 422' do
-        expect(message).to have_http_status(422)
+        expect(response).to have_http_status(422)
       end
 
       it 'returns a validation failure message' do
-        expect(response.body).to match(/Validation failed: Surname cant't be blank/)
+        expect(response.body).to match(/Validation failed: Surname can't be blank, Birthdate can't be blank/)
       end
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe 'Student API', type: :request do
 
   # Test suite for DELETE /students/:id
   describe 'DELETE /students/:id' do
-    before { delete "/students/#{student_id} "}
+    before { delete "/students/#{student_id}" }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
