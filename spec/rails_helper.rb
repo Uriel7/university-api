@@ -21,7 +21,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -46,6 +46,9 @@ RSpec.configure do |config|
   # add Factory Girl methods
   config.include FactoryGirl::Syntax::Methods
 
+  # Request Spec Helper
+  config.include RequestSpecHelper, type: :request
+
   # start by truncating all the tables 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
@@ -53,7 +56,7 @@ RSpec.configure do |config|
   end
 
   # start the transaction strategy as examples are run
-  config.aroud(:each) do |example|
+  config.around(:each) do |example|
     DatabaseCleaner.cleaning do
       example.run
     end
