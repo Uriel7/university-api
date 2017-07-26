@@ -45,7 +45,7 @@ RSpec.describe 'Score API', type: :request do
       end
 
       it 'retunrs a not found message' do
-        expect(repsonse.body).to match(/Couldn't find Score with 'id'=100/)
+        expect(response.body).to match(/Couldn't find Score with/)
       end
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe 'Score API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post "/students/#{student_id}/score", params: { student_id: student_id } }
+      before { post "/students/#{student_id}/scores", params: { student_id: student_id } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
